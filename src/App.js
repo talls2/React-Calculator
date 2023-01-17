@@ -5,15 +5,65 @@ import { Row } from "./global";
 import { FatherDiv } from "./global";
 
 function App() {
-  const [currentNumber, setCurrentNumber] = useState("");
-
-  const handleAddNumber = (number) => {
-    setCurrentNumber((prev) => `${number}${prev}`);
-  };
+  const [currentNumber, setCurrentNumber] = useState('0');
+  const [firstNumber, setFirstNumber] = useState('0');
+  const [operation, setOperation] = useState('');
 
   const handleOnClear = () => {
-    setCurrentNumber("");
+    setCurrentNumber('0')
+    setFirstNumber('0')
+    setOperation('')
   };
+
+  const handleAddNumber = (number) => {
+    setCurrentNumber((prev) => `${number}${prev === '0' ? '' : prev}` );
+  };
+  const handleSumNumbers = () => {
+
+    if(firstNumber === '0'){
+        setFirstNumber(String(currentNumber));
+        setCurrentNumber('0')
+        setOperation('+')
+    }else {
+      const sum = Number(firstNumber) + Number(currentNumber);
+      setCurrentNumber(String(sum))
+      setOperation('')
+    }
+
+  }
+
+  const handleMinusNumbers = () => {
+
+    if(firstNumber === '0'){
+        setFirstNumber(String(currentNumber));
+        setCurrentNumber('0')
+        setOperation('-')
+    }else {
+      const sum = Number(firstNumber) - Number(currentNumber);
+      setCurrentNumber(String(sum))
+      setOperation('')
+    }
+
+  }
+
+  const handleEquals = () => {
+
+    if(firstNumber !== '0' && operation !== '' && currentNumber !== '0'){
+        switch(operation){
+          case '+':
+            handleSumNumbers();
+            break;
+          case '-':
+            handleMinusNumbers();
+            break;
+          default: 
+            break;
+        }
+    }
+
+  }
+
+
   return (
     <div className="App">
       <FatherDiv>
@@ -42,7 +92,7 @@ function App() {
           <Button label="3" onClick={() => handleAddNumber("3")}>
             3
           </Button>
-          <Button label="-" onClick={() => handleAddNumber("-")}>
+          <Button label="-" onClick={() => handleMinusNumbers("-")}>
             -
           </Button>
         </Row>
@@ -56,7 +106,7 @@ function App() {
           <Button label="6" onClick={() => handleAddNumber("6")}>
             6
           </Button>
-          <Button label="+" onClick={() => handleAddNumber("+")}>
+          <Button label="+" onClick={() => handleSumNumbers("+")}>
             +
           </Button>
         </Row>
@@ -70,12 +120,12 @@ function App() {
           <Button label="9" onClick={() => handleAddNumber("9")}>
             9
           </Button>
-          <Button label="=" onClick={() => handleAddNumber("=")}>
+          <Button label="=" onClick={() => handleEquals("=")}>
             =
           </Button>
         </Row>
       </FatherDiv>
-    </div>
+    </div>  
   );
 }
 
